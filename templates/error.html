@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Error - AI INCOME{% endblock %}
+
+{% block navigation %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="error-page">
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        
+        <h2>Oops! Something went wrong</h2>
+        
+        <div class="error-message">
+            <p>{{ message }}</p>
+        </div>
+        
+        <div class="error-actions">
+            <button class="btn btn-primary" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                Go Back
+            </button>
+            
+            <button class="btn btn-secondary" onclick="goHome()">
+                <i class="fas fa-home"></i>
+                Home
+            </button>
+        </div>
+        
+        <div class="error-help">
+            <h4>Need Help?</h4>
+            <p>If you continue to experience issues, please contact support through the Telegram bot.</p>
+            
+            <div class="help-steps">
+                <div class="help-step">
+                    <i class="fas fa-robot"></i>
+                    <span>Open the bot in Telegram</span>
+                </div>
+                <div class="help-step">
+                    <i class="fas fa-comment"></i>
+                    <span>Use /help command</span>
+                </div>
+                <div class="help-step">
+                    <i class="fas fa-user-headset"></i>
+                    <span>Contact admin support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function goBack() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            goHome();
+        }
+    }
+    
+    function goHome() {
+        const tgData = new URLSearchParams(window.location.search).get('tgWebAppData');
+        if (tgData) {
+            window.location.href = `/dashboard?tgWebAppData=${tgData}`;
+        } else {
+            window.location.href = '/';
+        }
+    }
+    
+    // Auto redirect after 10 seconds if no action
+    setTimeout(() => {
+        if (confirm('Redirect to home page?')) {
+            goHome();
+        }
+    }, 10000);
+</script>
+{% endblock %}

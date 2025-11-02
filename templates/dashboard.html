@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AI INCOME{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <div class="avatar-container">
+            <div class="avatar">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+        </div>
+        <h2>Welcome back, Miner!</h2>
+        <p class="subtitle">Your crypto mining empire awaits</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards">
+        <div class="stat-card primary">
+            <div class="stat-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-label">GPU Power</span>
+                <span class="stat-value">{{ "{:,}".format(user.gpu_power) }}</span>
+            </div>
+        </div>
+        
+        <div class="stat-card success">
+            <div class="stat-icon">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-label">Total Hashes</span>
+                <span class="stat-value">{{ "%.6f"|format(user.mined_hashes) }}</span>
+            </div>
+        </div>
+        
+        <div class="stat-card warning">
+            <div class="stat-icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-label">USDT Value</span>
+                <span class="stat-value">${{ "%.2f"|format(user.mined_hashes * 0.01) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mining Section -->
+    <div class="mining-section">
+        <div class="mining-card">
+            <div class="mining-header">
+                <h3><i class="fas fa-pickaxe"></i> Start Mining</h3>
+                <div class="mining-status">
+                    <span class="status-dot online"></span>
+                    <span>Ready to Mine</span>
+                </div>
+            </div>
+            
+            <div class="mining-info">
+                <p>Click the button below to start mining cryptocurrency hashes!</p>
+                <div class="mining-estimate">
+                    <span>Estimated earnings per click: <strong>${{ "%.4f"|format((user.gpu_power * 0.0005) * 0.01) }}</strong></span>
+                </div>
+            </div>
+            
+            <button class="mine-button" onclick="startMining()">
+                <i class="fas fa-play"></i>
+                <span>START MINING</span>
+                <div class="button-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h3><i class="fas fa-lightning-bolt"></i> Quick Actions</h3>
+        
+        <div class="actions-grid">
+            <a href="/shop?tgWebAppData={{ request.args.get('tgWebAppData', '') }}" class="action-item">
+                <div class="action-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <span>GPU Shop</span>
+                <small>Boost your mining power</small>
+            </a>
+            
+            <div class="action-item" onclick="showStats()">
+                <div class="action-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <span>Statistics</span>
+                <small>View detailed stats</small>
+            </div>
+            
+            <div class="action-item" onclick="shareReferral()">
+                <div class="action-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>Invite Friends</span>
+                <small>Earn bonus power</small>
+            </div>
+            
+            <div class="action-item" onclick="showWithdraw()">
+                <div class="action-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <span>Withdraw</span>
+                <small>Cash out earnings</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="progress-section">
+        <h3><i class="fas fa-trophy"></i> Your Progress</h3>
+        
+        <div class="progress-card">
+            <div class="progress-header">
+                <span>Mining Progress</span>
+                <span>{{ "%.1f"|format((user.mined_hashes / 100) * 100) }}%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ "%.1f"|format(min((user.mined_hashes / 100) * 100, 100)) }}%"></div>
+                </div>
+            </div>
+            <small>Next milestone: 100 hashes</small>
+        </div>
+        
+        <div class="achievements">
+            <h4>Recent Achievements</h4>
+            <div class="achievement-list">
+                {% if user.mined_hashes > 0 %}
+                <div class="achievement-item unlocked">
+                    <i class="fas fa-medal"></i>
+                    <span>First Miner</span>
+                </div>
+                {% endif %}
+                
+                {% if user.mined_hashes >= 10 %}
+                <div class="achievement-item unlocked">
+                    <i class="fas fa-fire"></i>
+                    <span>Hash Collector</span>
+                </div>
+                {% else %}
+                <div class="achievement-item locked">
+                    <i class="fas fa-lock"></i>
+                    <span>Hash Collector (10 hashes)</span>
+                </div>
+                {% endif %}
+                
+                {% if user.gpu_power > 1000 %}
+                <div class="achievement-item unlocked">
+                    <i class="fas fa-rocket"></i>
+                    <span>Power Booster</span>
+                </div>
+                {% else %}
+                <div class="achievement-item locked">
+                    <i class="fas fa-lock"></i>
+                    <span>Power Booster (Buy GPU power)</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Bonus Section -->
+    <div class="daily-section">
+        <div class="daily-card">
+            <div class="daily-icon">
+                <i class="fas fa-gift"></i>
+            </div>
+            <div class="daily-content">
+                <h4>Daily Bonus</h4>
+                <p>Come back tomorrow for your daily mining bonus!</p>
+                <button class="btn btn-secondary" disabled>
+                    <i class="fas fa-clock"></i>
+                    Next bonus in 12h 34m
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Referral Share Modal -->
+<div id="referral-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Invite Friends</h3>
+            <button class="close-btn" onclick="closeModal('referral-modal')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="referral-content">
+            <div class="referral-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <p>Share your referral code and earn <strong>500 GPU Power</strong> for each friend who joins!</p>
+            <div class="referral-code">
+                <span>{{ user.referral_code }}</span>
+                <button onclick="copyReferralCode()" class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            <button class="btn btn-primary" onclick="shareReferralLink()">
+                <i class="fas fa-share"></i>
+                Share Link
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Withdraw Modal -->
+<div id="withdraw-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Withdraw Earnings</h3>
+            <button class="close-btn" onclick="closeModal('withdraw-modal')">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="withdraw-content">
+            <div class="balance-display">
+                <i class="fas fa-wallet"></i>
+                <span>Available Balance</span>
+                <strong>${{ "%.2f"|format(user.mined_hashes * 0.01) }}</strong>
+            </div>
+            
+            <div class="withdraw-info">
+                <p><i class="fas fa-info-circle"></i> Minimum withdrawal: $10.00</p>
+                {% if (user.mined_hashes * 0.01) >= 10 %}
+                <button class="btn btn-success">
+                    <i class="fas fa-money-bill-wave"></i>
+                    Withdraw Now
+                </button>
+                {% else %}
+                <p class="text-muted">Keep mining to reach minimum withdrawal amount!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function shareReferral() {
+        showModal('referral-modal');
+    }
+    
+    function showWithdraw() {
+        showModal('withdraw-modal');
+    }
+    
+    function copyReferralCode() {
+        const code = '{{ user.referral_code }}';
+        navigator.clipboard.writeText(code).then(() => {
+            showSuccess('Copied!', 'Referral code copied to clipboard');
+        });
+    }
+    
+    function shareReferralLink() {
+        const referralUrl = `https://t.me/{{ os.getenv('BOT_USERNAME', 'AI_IncomeBot') }}?start={{ user.referral_code }}`;
+        
+        if (window.Telegram.WebApp.openTelegramLink) {
+            const shareText = `🤖 Join AI INCOME and start mining crypto! 💎\n\n⚡ Get 200 bonus GPU Power when you join!\n💰 Start earning USDT immediately!\n\nUse my referral link: ${referralUrl}`;
+            window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralUrl)}&text=${encodeURIComponent(shareText)}`);
+        } else {
+            copyReferralCode();
+        }
+    }
+    
+    // Auto-refresh stats every 30 seconds
+    setInterval(() => {
+        // Silently update stats without reloading
+        updateStats();
+    }, 30000);
+    
+    async function updateStats() {
+        try {
+            const result = await apiRequest('/api/stats');
+            if (!result.error) {
+                // Update displayed values
+                document.querySelector('.stat-card.success .stat-value').textContent = result.total_hashes.toFixed(6);
+                document.querySelector('.stat-card.warning .stat-value').textContent = `$${result.usdt_value.toFixed(2)}`;
+            }
+        } catch (error) {
+            // Silent fail for background updates
+        }
+    }
+</script>
+{% endblock %}

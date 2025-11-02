@@ -1,0 +1,124 @@
+PROJECT NAME: AI INCOME Telegram Bot
+
+DESCRIPTION:
+A Telegram bot that simulates crypto mining, rewards users with virtual GPU power, tracks referrals, and allows hash-to-USDT exchange.
+
+TECH STACK:
+- Python
+- python-telegram-bot
+- Flask or FastAPI
+- SQLite or PostgreSQL
+- Hosting: Heroku, Render, or VPS
+
+FOLDER STRUCTURE:
+ai_income_bot/
+├── bot.py
+├── handlers/
+│   ├── start.py
+│   ├── miner.py
+│   ├── referral.py
+│   ├── withdraw.py
+│   └── shop.py
+├── models/
+│   └── user.py
+├── utils/
+│   ├── mining.py
+│   └── referral.py
+├── database.db
+├── requirements.txt
+└── README.md
+
+STEP-BY-STEP INSTRUCTIONS:
+
+1. Install dependencies:
+pip install python-telegram-bot flask sqlalchemy
+
+2. Create bot via @BotFather and get token.
+
+3. Database Schema (models/user.py):
+from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    telegram_id = Column(String, unique=True)
+    gpu_power = Column(Integer, default=1000)
+    mined_hashes = Column(Float, default=0.0)
+    referral_code = Column(String)
+    referred_by = Column(String)
+    last_mine_time = Column(DateTime)
+
+4. Start Command (handlers/start.py):
+def start(update, context):
+    user_id = update.effective_user.id
+    referral_code = context.args[0] if context.args else None
+    create_or_update_user(user_id, referral_code)
+    update.message.reply_text(
+        "Welcome to AI INCOME!\nStart mining and earn crypto.\nUse /miner to begin."
+    )
+
+5. Mining Logic (handlers/miner.py):
+def miner(update, context):
+    user = get_user(update.effective_user.id)
+    hashes = calculate_mining(user.gpu_power)
+    user.mined_hashes += hashes
+    update.message.reply_text(f"You mined {hashes:.5f} Hashes!\nTotal: {user.mined_hashes:.5f}")
+
+6. Referral System (handlers/referral.py):
+def referral_link(update, context):
+    user_id = update.effective_user.id
+    link = f"https://t.me/AI_INCOME_Bot?start={user_id}"
+    update.message.reply_text(f"Invite friends using this link:\n{link}")
+
+7. Power Shop (handlers/shop.py):
+def buy_power(update, context):
+    amount = float(context.args[0])
+    base_power = amount * 10000
+    bonus = base_power * 0.25
+    total_power = base_power + bonus
+    user = get_user(update.effective_user.id)
+    user.gpu_power += total_power
+    update.message.reply_text(f"Purchased {total_power} GPU power!\nCurrent: {user.gpu_power}")
+
+8. Withdraw Logic (handlers/withdraw.py):
+def withdraw(update, context):
+    user = get_user(update.effective_user.id)
+    usdt = user.mined_hashes * 0.01
+    update.message.reply_text(f"You can withdraw {usdt:.2f} USDT.\nFeature coming soon!")
+
+9. Utility Functions (utils/mining.py):
+def calculate_mining(gpu_power):
+    return gpu_power * 0.0005
+
+10. Telegram Bot Setup (bot.py):
+from telegram.ext import Updater, CommandHandler
+from handlers import start, miner, referral_link, buy_power, withdraw
+
+updater = Updater("YOUR_BOT_TOKEN", use_context=True)
+dp = updater.dispatcher
+
+dp.add_handler(CommandHandler("start", start))
+dp.add_handler(CommandHandler("miner", miner))
+dp.add_handler(CommandHandler("referral", referral_link))
+dp.add_handler(CommandHandler("buy", buy_power))
+dp.add_handler(CommandHandler("withdraw", withdraw))
+
+updater.start_polling()
+updater.idle()
+
+TESTING CHECKLIST:
+- /start registers user and tracks referral
+- /miner simulates mining
+- /referral generates invite link
+- /buy 3 adds GPU power
+- /withdraw shows USDT conversion
+
+OPTIONAL FEATURES TO ADD:
+- Leaderboard
+- Daily mining limits
+- CAPTCHA protection
+- Real token integration
+- Admin dashboard

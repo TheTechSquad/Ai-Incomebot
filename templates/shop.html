@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+
+{% block title %}GPU Power Shop - AI INCOME{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Shop Header -->
+    <div class="shop-header">
+        <h2><i class="fas fa-store"></i> GPU Power Shop</h2>
+        <p class="subtitle">Upgrade your mining capabilities and boost your earnings!</p>
+        
+        <div class="current-power">
+            <span class="label">Current GPU Power:</span>
+            <span class="value">{{ "{:,}".format(user.gpu_power) }}</span>
+        </div>
+    </div>
+
+    <!-- Featured Package -->
+    <div class="featured-package">
+        <div class="package-badge">
+            <span>BEST VALUE</span>
+        </div>
+        <div class="package-card featured">
+            <div class="package-header">
+                <h3>${{ packages[2].price }} Package</h3>
+                <div class="package-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+            </div>
+            
+            <div class="package-content">
+                <div class="power-breakdown">
+                    <div class="power-item">
+                        <span>Base Power:</span>
+                        <span>{{ "{:,}".format(packages[2].base_power) }}</span>
+                    </div>
+                    <div class="power-item bonus">
+                        <span>Bonus (25%):</span>
+                        <span>+{{ "{:,}".format(packages[2].bonus_power) }}</span>
+                    </div>
+                    <div class="power-total">
+                        <span>Total Power:</span>
+                        <span>{{ "{:,}".format(packages[2].total_power) }}</span>
+                    </div>
+                </div>
+                
+                <div class="earnings-estimate">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Daily Estimate: <strong>${{ "%.2f"|format((packages[2].total_power * 0.0005 * 24) * 0.01) }}</strong></span>
+                </div>
+                
+                <button class="btn btn-primary featured-btn" onclick="purchasePackage({{ packages[2].id }})">
+                    <i class="fas fa-shopping-cart"></i>
+                    Purchase Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Packages -->
+    <div class="packages-section">
+        <h3><i class="fas fa-boxes"></i> All Packages</h3>
+        
+        <div class="packages-grid">
+            {% for package in packages %}
+            <div class="package-card {% if package.price == 10 %}featured-small{% endif %}">
+                <div class="package-header">
+                    <h4>${{ package.price }}</h4>
+                    {% if package.price == 5 %}
+                    <span class="package-tag starter">STARTER</span>
+                    {% elif package.price == 10 %}
+                    <span class="package-tag popular">POPULAR</span>
+                    {% elif package.price == 20 %}
+                    <span class="package-tag premium">PREMIUM</span>
+                    {% endif %}
+                </div>
+                
+                <div class="package-body">
+                    <div class="power-display">
+                        <span class="power-amount">{{ "{:,}".format(package.total_power) }}</span>
+                        <span class="power-label">GPU Power</span>
+                    </div>
+                    
+                    <div class="package-features">
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>{{ "{:,}".format(package.base_power) }} Base Power</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>+{{ "{:,}".format(package.bonus_power) }} Bonus (25%)</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>${{ "%.2f"|format((package.total_power * 0.0005) * 0.01) }} per mine</span>
+                        </div>
+                    </div>
+                    
+                    <div class="roi-info">
+                        <small>
+                            <i class="fas fa-info-circle"></i>
+                            ROI: ~{{ "%.0f"|format(package.price / ((package.total_power * 0.0005 * 24) * 0.01)) }} days
+                        </small>
+                    </div>
+                    
+                    <button class="btn btn-outline purchase-btn" onclick="purchasePackage({{ package.id }})">
+                        <i class="fas fa-cart-plus"></i>
+                        Buy ${{{ package.price }}
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Purchase Benefits -->
+    <div class="benefits-section">
+        <h3><i class="fas fa-star"></i> Why Upgrade?</h3>
+        
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4>Higher Earnings</h4>
+                <p>More GPU power means higher hash rates and better earnings per mining session.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h4>Faster ROI</h4>
+                <p>Bigger packages offer better value and faster return on investment.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <h4>Bonus Power</h4>
+                <p>All packages include 25% bonus power - that's free money!</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h4>Compound Growth</h4>
+                <p>More power leads to more earnings, allowing for more upgrades!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Power Calculator -->
+    <div class="calculator-section">
+        <h3><i class="fas fa-calculator"></i> Earnings Calculator</h3>
+        
+        <div class="calculator-card">
+            <div class="calculator-input">
+                <label>Select Package:</label>
+                <select id="calc-package" onchange="updateCalculator()">
+                    {% for package in packages %}
+                    <option value="{{ package.total_power }}|{{ package.price }}">${{ package.price }} Package ({{ "{:,}".format(package.total_power) }} power)</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="calculator-results">
+                <div class="calc-result">
+                    <span>Per Mining Session:</span>
+                    <span id="calc-per-session">$0.00</span>
+                </div>
+                <div class="calc-result">
+                    <span>Daily Estimate (24 mines):</span>
+                    <span id="calc-daily">$0.00</span>
+                </div>
+                <div class="calc-result">
+                    <span>Monthly Estimate:</span>
+                    <span id="calc-monthly">$0.00</span>
+                </div>
+                <div class="calc-result highlight">
+                    <span>Break-even Time:</span>
+                    <span id="calc-breakeven">0 days</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials-section">
+        <h3><i class="fas fa-comments"></i> What Miners Say</h3>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Upgraded to the $20 package and already earned back my investment! Amazing returns!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <i class="fas fa-user-circle"></i>
+                    <span>CryptoMiner_Pro</span>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Started with $5 package, now earning enough for daily coffee money. Love this bot!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <i class="fas fa-user-circle"></i>
+                    <span>HashHunter2023</span>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"The bonus power makes all the difference. Highly recommend the bigger packages!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <i class="fas fa-user-circle"></i>
+                    <span>DigitalGoldRush</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Purchase Confirmation Modal -->
+<div id="purchase-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Purchase</h3>
+            <button class="close-btn" onclick="closeModal('purchase-modal')" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="purchase-content">
+            <div class="package-summary" id="package-summary">
+                <!-- Package details will be inserted here -->
+            </div>
+            
+            <div class="payment-info">
+                <p><i class="fas fa-info-circle"></i> This is a demo purchase. In a real implementation, this would integrate with payment processors.</p>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal('purchase-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmPurchase()" id="confirm-purchase-btn">
+                    <i class="fas fa-check"></i>
+                    Confirm Purchase
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let selectedPackage = null;
+    
+    const packages = {{ packages | tojson }};
+    
+    function purchasePackage(packageId) {
+        selectedPackage = packages.find(p => p.id === packageId);
+        if (!selectedPackage) return;
+        
+        document.getElementById('package-summary').innerHTML = `
+            <div class="summary-header">
+                <h4>$${selectedPackage.price} GPU Power Package</h4>
+            </div>
+            <div class="summary-details">
+                <div class="detail-row">
+                    <span>GPU Power:</span>
+                    <span>${selectedPackage.total_power.toLocaleString()}</span>
+                </div>
+                <div class="detail-row">
+                    <span>Base Power:</span>
+                    <span>${selectedPackage.base_power.toLocaleString()}</span>
+                </div>
+                <div class="detail-row bonus">
+                    <span>Bonus Power (25%):</span>
+                    <span>+${selectedPackage.bonus_power.toLocaleString()}</span>
+                </div>
+                <div class="detail-row total">
+                    <span><strong>Total Power:</strong></span>
+                    <span><strong>${selectedPackage.total_power.toLocaleString()}</strong></span>
+                </div>
+                <div class="detail-row earnings">
+                    <span>Earnings per mine:</span>
+                    <span>$${((selectedPackage.total_power * 0.0005) * 0.01).toFixed(4)}</span>
+                </div>
+            </div>
+        `;
+        
+        showModal('purchase-modal');
+    }
+    
+    async function confirmPurchase() {
+        if (!selectedPackage) return;
+        
+        const confirmBtn = document.getElementById('confirm-purchase-btn');
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        
+        try {
+            const result = await apiRequest('/api/purchase', {
+                package_id: selectedPackage.id
+            });
+            
+            closeModal('purchase-modal');
+            
+            if (result.success) {
+                showSuccess(
+                    'Purchase Successful!',
+                    `${result.message} Your new GPU power: ${result.new_gpu_power.toLocaleString()}`
+                );
+                
+                // Refresh page after success
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            } else {
+                showError(result.error || 'Purchase failed');
+            }
+        } catch (error) {
+            showError('Network error occurred');
+        } finally {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Purchase';
+        }
+    }
+    
+    function updateCalculator() {
+        const select = document.getElementById('calc-package');
+        const [power, price] = select.value.split('|').map(Number);
+        
+        const perSession = (power * 0.0005) * 0.01;
+        const daily = perSession * 24;
+        const monthly = daily * 30;
+        const breakeven = Math.ceil(price / daily);
+        
+        document.getElementById('calc-per-session').textContent = `$${perSession.toFixed(4)}`;
+        document.getElementById('calc-daily').textContent = `$${daily.toFixed(2)}`;
+        document.getElementById('calc-monthly').textContent = `$${monthly.toFixed(2)}`;
+        document.getElementById('calc-breakeven').textContent = `${breakeven} days`;
+    }
+    
+    // Initialize calculator
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCalculator();
+    });
+    
+    // Add purchase button animations
+    document.querySelectorAll('.purchase-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+</script>
+{% endblock %}

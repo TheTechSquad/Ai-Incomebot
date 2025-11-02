@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}AI INCOME - Crypto Mining Bot{% endblock %}
+
+{% block navigation %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="landing-page">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+            
+            <h1>AI INCOME</h1>
+            <p class="hero-subtitle">The Future of Crypto Mining</p>
+            
+            <div class="hero-description">
+                <p>Start your cryptocurrency mining journey with our advanced AI-powered bot. Mine hashes, earn USDT, and build your crypto empire!</p>
+            </div>
+            
+            <div class="hero-features">
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>High-Performance Mining</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Real USDT Earnings</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <span>Referral Rewards</span>
+                </div>
+            </div>
+            
+            <div class="hero-cta">
+                <button class="btn btn-primary btn-large" onclick="openTelegramBot()">
+                    <i class="fab fa-telegram"></i>
+                    Start Mining Now
+                </button>
+                <p class="cta-note">Open in Telegram to begin</p>
+            </div>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h3>Join Thousands of Miners</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15,000+</div>
+                    <div class="stat-label">Active Miners</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$250K+</div>
+                    <div class="stat-label">Total Earnings</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500M+</div>
+                    <div class="stat-label">Hashes Mined</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- How It Works -->
+        <div class="how-it-works">
+            <h3>How It Works</h3>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h4>Start the Bot</h4>
+                    <p>Open AI INCOME bot in Telegram and register your account</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-pickaxe"></i>
+                    </div>
+                    <h4>Begin Mining</h4>
+                    <p>Use your GPU power to mine cryptocurrency hashes</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Upgrade & Earn</h4>
+                    <p>Buy more GPU power to increase your mining earnings</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h4>Withdraw Profits</h4>
+                    <p>Cash out your USDT earnings when you reach minimum</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="features-section">
+            <h3>Why Choose AI INCOME?</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Secure & Safe</h4>
+                    <p>Built with security in mind. Your data and earnings are protected.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h4>Fast Earnings</h4>
+                    <p>Start earning immediately with our optimized mining algorithms.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Mobile Friendly</h4>
+                    <p>Mine on the go with our responsive Telegram web interface.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4>Referral Program</h4>
+                    <p>Earn bonus GPU power for every friend you refer to the platform.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>24/7 Support</h4>
+                    <p>Our team is always ready to help you maximize your mining potential.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h4>Real Rewards</h4>
+                    <p>Earn real USDT that you can withdraw and use anywhere.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testimonials -->
+        <div class="testimonials-section">
+            <h3>What Our Miners Say</h3>
+            <div class="testimonials-carousel">
+                <div class="testimonial active">
+                    <div class="testimonial-content">
+                        <p>"Amazing bot! I've been mining for 2 weeks and already earned $50. The interface is so easy to use!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <span class="author-name">CryptoEnthusiast92</span>
+                            <span class="author-title">Active Miner</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"The referral program is fantastic! I've earned extra GPU power by inviting my friends. We're all mining together now!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <span class="author-name">BlockchainBoss</span>
+                            <span class="author-title">Top Referrer</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Started with the basic package and quickly upgraded. The ROI is incredible and the support team is very helpful!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <span class="author-name">DigitalMiner2024</span>
+                            <span class="author-title">Premium User</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-controls">
+                <button class="testimonial-btn" onclick="showTestimonial(0)"></button>
+                <button class="testimonial-btn" onclick="showTestimonial(1)"></button>
+                <button class="testimonial-btn" onclick="showTestimonial(2)"></button>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h3>Frequently Asked Questions</h3>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does the mining system work?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our AI-powered system simulates cryptocurrency mining by calculating hash rates based on your GPU power. Higher GPU power means more hashes per mining session.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do I withdraw my earnings?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once you reach the minimum withdrawal amount of $10, you can request a withdrawal through the bot. Payments are processed within 24-48 hours.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>What is GPU power and how do I get more?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>GPU power determines your mining capacity. You start with 1,000 power and can purchase more through our shop. You also earn bonus power by referring friends.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is there a limit to how much I can earn?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>There are no limits! The more GPU power you have and the more you mine, the higher your earnings potential. Many users earn $20-100+ per month.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Final CTA -->
+        <div class="final-cta">
+            <h2>Ready to Start Mining?</h2>
+            <p>Join thousands of miners already earning with AI INCOME</p>
+            <button class="btn btn-primary btn-large" onclick="openTelegramBot()">
+                <i class="fab fa-telegram"></i>
+                Launch AI INCOME Bot
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function openTelegramBot() {
+        // Replace with your actual bot username
+        const botUsername = 'AI_IncomeBot';
+        const telegramUrl = `https://t.me/${botUsername}`;
+        
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.openTelegramLink(telegramUrl);
+        } else {
+            window.open(telegramUrl, '_blank');
+        }
+    }
+    
+    let currentTestimonial = 0;
+    const testimonials = document.querySelectorAll('.testimonial');
+    const testimonialBtns = document.querySelectorAll('.testimonial-btn');
+    
+    function showTestimonial(index) {
+        testimonials.forEach((testimonial, i) => {
+            testimonial.classList.toggle('active', i === index);
+        });
+        
+        testimonialBtns.forEach((btn, i) => {
+            btn.classList.toggle('active', i === index);
+        });
+        
+        currentTestimonial = index;
+    }
+    
+    // Auto-rotate testimonials
+    setInterval(() => {
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        showTestimonial(currentTestimonial);
+    }, 5000);
+    
+    function toggleFaq(element) {
+        const faqItem = element.parentElement;
+        const isOpen = faqItem.classList.contains('open');
+        
+        // Close all other FAQs
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('open');
+        });
+        
+        // Toggle current FAQ
+        if (!isOpen) {
+            faqItem.classList.add('open');
+        }
+    }
+    
+    // Initialize testimonials
+    document.addEventListener('DOMContentLoaded', () => {
+        showTestimonial(0);
+    });
+</script>
+{% endblock %}

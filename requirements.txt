@@ -1,0 +1,22 @@
+# AI INCOME Telegram Bot Dependencies
+# Core bot framework
+python-telegram-bot==21.7
+
+# Database ORM
+SQLAlchemy==1.4.53
+
+# Environment variable management
+python-dotenv==1.0.0
+
+# Date/time utilities (usually included with Python but good to be explicit)
+pytz==2023.3
+
+# Web Framework and API
+flask==3.0.0
+flask-cors==4.0.0
+requests==2.31.0
+
+# Additional web dependencies
+jinja2==3.1.2
+werkzeug==3.0.1
+gunicorn==21.2.0

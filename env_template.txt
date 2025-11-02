@@ -1,0 +1,27 @@
+# AI INCOME Bot Configuration Template
+# Copy this file to .env and fill in your actual values
+
+# Bot Configuration (Required)
+BOT_TOKEN=your_bot_token_here_from_botfather
+BOT_USERNAME=your_bot_username_without_@
+ADMIN_USERNAME=your_admin_username_without_@
+
+# Web App Configuration (Required for web interface)
+WEB_APP_URL=https://your-domain.com
+FLASK_SECRET_KEY=generate-a-secure-random-key-here
+
+# Deployment Configuration (Optional)
+DEPLOYMENT_MODE=combined
+PRODUCTION=false
+PORT=5000
+
+# Database Configuration (Optional - for production)
+DATABASE_URL=sqlite:///ai_income.db
+
+# Instructions:
+# 1. Copy this file: cp env_template.txt .env
+# 2. Edit .env with your actual values
+# 3. Never commit .env file to git (it's in .gitignore)
+# 4. For BOT_TOKEN: Get from @BotFather in Telegram
+# 5. For WEB_APP_URL: Use your deployed app URL (e.g., Heroku app URL)
+# 6. For FLASK_SECRET_KEY: Generate with: python -c "import secrets; print(secrets.token_hex(16))"
