@@ -31,7 +31,7 @@
     </div>
 
     <!-- Main Content -->
-    <div id="main-content" class="main-content" style="display: none;">
+    <div id="main-content" class="main-content hidden">
         {% block header %}
         <header class="app-header">
             <div class="container">
@@ -99,7 +99,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Your Statistics</h3>
-                <button class="close-btn" onclick="closeModal('stats-modal')">
+                <button class="close-btn" onclick="closeModal('stats-modal')" title="Close Statistics" aria-label="Close Statistics">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

@@ -242,6 +242,21 @@ def api_purchase():
         logger.error(f"Purchase API error: {e}")
         return jsonify({"error": "Purchase failed"}), 500
 
+@app.route('/api/packages', methods=['GET'])
+def get_packages():
+    """Get available packages"""
+    try:
+        packages = [
+            {"id": 1, "price": 5, "base_power": 100, "bonus_power": 25, "total_power": 125},
+            {"id": 2, "price": 25, "base_power": 600, "bonus_power": 150, "total_power": 750},
+            {"id": 3, "price": 50, "base_power": 1300, "bonus_power": 325, "total_power": 1625},
+            {"id": 4, "price": 100, "base_power": 2800, "bonus_power": 700, "total_power": 3500}
+        ]
+        return jsonify(packages)
+    except Exception as e:
+        logger.error(f"Packages API error: {e}")
+        return jsonify({"error": "Failed to load packages"}), 500
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors"""

@@ -124,7 +124,7 @@
             </div>
             <div class="progress-bar-container">
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: {{ "%.1f"|format(min((user.mined_hashes / 100) * 100, 100)) }}%"></div>
+                    <div class="progress-fill" data-width="{{ "%.1f"|format(min((user.mined_hashes / 100) * 100, 100)) }}"></div>
                 </div>
             </div>
             <small>Next milestone: 100 hashes</small>
@@ -190,7 +190,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Invite Friends</h3>
-            <button class="close-btn" onclick="closeModal('referral-modal')">
+            <button class="close-btn" onclick="closeModal('referral-modal')" title="Close" aria-label="Close Referral Modal">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -201,7 +201,7 @@
             <p>Share your referral code and earn <strong>500 GPU Power</strong> for each friend who joins!</p>
             <div class="referral-code">
                 <span>{{ user.referral_code }}</span>
-                <button onclick="copyReferralCode()" class="copy-btn">
+                <button onclick="copyReferralCode()" class="copy-btn" title="Copy Referral Code" aria-label="Copy Referral Code">
                     <i class="fas fa-copy"></i>
                 </button>
             </div>
@@ -218,7 +218,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Withdraw Earnings</h3>
-            <button class="close-btn" onclick="closeModal('withdraw-modal')">
+            <button class="close-btn" onclick="closeModal('withdraw-modal')" title="Close" aria-label="Close Withdraw Modal">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -272,6 +272,15 @@
             copyReferralCode();
         }
     }
+    
+    // Set progress bar width from data attribute
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressFill = document.querySelector('.progress-fill');
+        if (progressFill) {
+            const width = progressFill.getAttribute('data-width');
+            progressFill.style.width = width + '%';
+        }
+    });
     
     // Auto-refresh stats every 30 seconds
     setInterval(() => {

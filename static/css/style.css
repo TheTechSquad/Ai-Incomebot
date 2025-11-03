@@ -253,6 +253,7 @@ body {
   justify-content: center;
   margin: 0 auto;
   font-size: 32px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -886,6 +887,7 @@ body {
   padding: var(--spacing-md);
   border-radius: var(--border-radius-md);
   margin-top: var(--spacing-md);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -1198,6 +1200,7 @@ body {
   background: rgba(255,255,255,0.2);
   padding: var(--spacing-md);
   border-radius: var(--border-radius-lg);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -1604,4 +1607,9 @@ body {
     background: white !important;
     color: black !important;
   }
+}
+
+/* Utility Classes */
+.hidden { 
+  display: none !important; 
 }

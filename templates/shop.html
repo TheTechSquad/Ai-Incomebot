@@ -49,7 +49,7 @@
                     <span>Daily Estimate: <strong>${{ "%.2f"|format((packages[2].total_power * 0.0005 * 24) * 0.01) }}</strong></span>
                 </div>
                 
-                <button class="btn btn-primary featured-btn" onclick="purchasePackage({{ packages[2].id }})">
+                <button class="btn btn-primary featured-btn purchase-btn" data-package-id="{{ packages[2].id }}">
                     <i class="fas fa-shopping-cart"></i>
                     Purchase Now
                 </button>
@@ -103,7 +103,7 @@
                         </small>
                     </div>
                     
-                    <button class="btn btn-outline purchase-btn" onclick="purchasePackage({{ package.id }})">
+                    <button class="btn btn-outline purchase-btn" data-package-id="{{ package.id }}">
                         <i class="fas fa-cart-plus"></i>
                         Buy ${{{ package.price }}
                     </button>
@@ -159,7 +159,7 @@
         <div class="calculator-card">
             <div class="calculator-input">
                 <label>Select Package:</label>
-                <select id="calc-package" onchange="updateCalculator()">
+                <select id="calc-package" onchange="updateCalculator()" title="Select Package" aria-label="Select Package for Calculator">
                     {% for package in packages %}
                     <option value="{{ package.total_power }}|{{ package.price }}">${{ package.price }} Package ({{ "{:,}".format(package.total_power) }} power)</option>
                     {% endfor %}
@@ -258,8 +258,23 @@
 {% block extra_js %}
 <script>
     let selectedPackage = null;
+    let packages = [];
     
-    const packages = {{ packages | tojson }};
+    // Initialize packages from server data
+    fetch('/api/packages')
+        .then(response => response.json())
+        .then(data => {
+            packages = data;
+        })
+        .catch(console.error);
+    
+    // Event delegation for purchase buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('purchase-btn')) {
+            const packageId = parseInt(e.target.getAttribute('data-package-id'));
+            purchasePackage(packageId);
+        }
+    });
     
     function purchasePackage(packageId) {
         selectedPackage = packages.find(p => p.id === packageId);
