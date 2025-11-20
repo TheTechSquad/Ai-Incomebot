@@ -1,0 +1,48 @@
+services:
+  # Web App Service
+  - type: web
+    name: ai-income-webapp
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: BOT_TOKEN
+        sync: false
+      - key: BOT_USERNAME
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: WEB_APP_URL
+        sync: false
+      - key: DEPLOYMENT_MODE
+        value: web_only
+    autoDeploy: true
+
+  # Bot Service (Background Worker)
+  - type: worker
+    name: ai-income-bot
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: BOT_TOKEN
+        sync: false
+      - key: BOT_USERNAME
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: DEPLOYMENT_MODE
+        value: bot_only
+    autoDeploy: true
