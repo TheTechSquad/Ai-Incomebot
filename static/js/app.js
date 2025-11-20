@@ -3,11 +3,12 @@
  * Enhanced functionality for Telegram Web App integration
  */
 
-// Telegram Web App instance
-const tg = window.Telegram?.WebApp;
+// Telegram Web App instance (with fallback)
+const tg = window.Telegram?.WebApp || null;
 
 // App initialization
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('App initializing...', tg ? 'Telegram mode' : 'Browser mode');
     initializeApp();
     setupEventListeners();
     configureTheme();

@@ -37,7 +37,7 @@
             <div class="container">
                 <div class="header-content">
                     <div class="logo">
-                        <i class="fas fa-robot"></i>
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AI INCOME">
                         <span>AI INCOME</span>
                     </div>
                     {% if user %}
@@ -133,21 +133,28 @@
 
     <!-- JavaScript -->
     <script>
-        // Telegram Web App initialization
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp.expand();
-        
-        // Set theme colors
-        document.documentElement.style.setProperty('--tg-theme-bg-color', window.Telegram.WebApp.themeParams.bg_color || '#ffffff');
-        document.documentElement.style.setProperty('--tg-theme-text-color', window.Telegram.WebApp.themeParams.text_color || '#000000');
-        document.documentElement.style.setProperty('--tg-theme-button-color', window.Telegram.WebApp.themeParams.button_color || '#2196F3');
-        
-        // Get Telegram Web App data
-        const tgData = window.Telegram.WebApp.initData;
+        // Telegram Web App initialization (with fallback for browser viewing)
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand();
+            
+            // Set theme colors
+            document.documentElement.style.setProperty('--tg-theme-bg-color', window.Telegram.WebApp.themeParams.bg_color || '#ffffff');
+            document.documentElement.style.setProperty('--tg-theme-text-color', window.Telegram.WebApp.themeParams.text_color || '#000000');
+            document.documentElement.style.setProperty('--tg-theme-button-color', window.Telegram.WebApp.themeParams.button_color || '#2196F3');
+            
+            // Get Telegram Web App data
+            var tgData = window.Telegram.WebApp.initData;
+        } else {
+            // Browser fallback - no Telegram Web App available
+            var tgData = '';
+            console.log('Viewing in browser mode - Telegram Web App features disabled');
+        }
         
         // Hide loading screen after a short delay
         setTimeout(() => {
             document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('main-content').classList.remove('hidden');
             document.getElementById('main-content').style.display = 'block';
         }, 1500);
         
