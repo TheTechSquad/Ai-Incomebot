@@ -31,8 +31,8 @@ async def webapp_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Show web app button"""
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
     
-    # Your web app URL (replace with your actual domain)
-    web_app_url = "https://your-domain.com/dashboard"  # Replace with your actual URL
+    # Your web app URL from environment variable
+    web_app_url = os.getenv('WEB_APP_URL', 'https://ai-income.onrender.com') + "/dashboard"
     
     keyboard = [
         [InlineKeyboardButton(
